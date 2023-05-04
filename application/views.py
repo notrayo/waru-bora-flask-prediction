@@ -10,6 +10,7 @@ import matplotlib.pyplot as plt
 from tensorflow.keras.preprocessing.image import load_img, img_to_array
 from . import app
 
+
 # JSONIFY
 
 from flask import jsonify
@@ -24,12 +25,7 @@ def home():
         file.save(app.config['IMAGE_UPLOADS']+input_img)
 
         pred=predict_save(input_img)
-        # image for rendering on Flutter
-        pred_img_filename = 'pred_img.png'
-        predict_img_path = app.config['IMAGE_UPLOADS'] + pred_img_filename
-        pred_img_url = request.host_url + url_for('static', filename='uploads/' + pred_img_filename)
-
-        return jsonify({'prediction': pred, 'prediction_image_url': pred_img_url})
+        return render_template('home.html', pred=pred, input_img=input_img, pred_img='pred_img.png')
     return render_template('home.html')
 
 
@@ -37,7 +33,9 @@ def home():
 def about():
     return render_template('about.html')
 
+
 ##############################################
+#app.config['MODEL'] = '/home/user/Desktop/4th Year Project/waru bora/Dashboard/Flask App/plant-disease-classifier-master/application/static/models/model_v1.h5'
 model = load_model(app.config['MODEL'])
 class_names = ['Early_blight', 'Healthy', 'Late_blight']
 
