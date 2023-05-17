@@ -1,6 +1,7 @@
 from flask import Blueprint, request, jsonify, url_for, send_file
 from flask import render_template
 from werkzeug.utils import secure_filename
+import werkzeug
 from . import app
 import os
 os.environ["CUDA_VISIBLE_DEVICES"]="-1"
@@ -10,6 +11,7 @@ import matplotlib.pyplot as plt
 from tensorflow.keras.preprocessing.image import load_img, img_to_array
 from . import app
 
+app.config['UPLOADS_FLUTTER'] = os.path.join(os.getcwd(), 'UPLOADS_FLUTTER')
 
 # JSONIFY
 
@@ -20,6 +22,14 @@ views = Blueprint("views", __name__)
 @views.route('/', methods=['GET','POST'])
 def home():
     if request.method == "POST":
+        #testing
+        #3imagefile = request.files['image']
+        # filename = werkzeug.utils.secure_filename(imagefile.filename)
+        # imagefile.save('plant-disease-classifier-master/UPLOADS_FLUTTER/' + filename)
+        # 
+
+
+        
         file = request.files['file']
         input_img = secure_filename(file.filename)
         file.save(app.config['IMAGE_UPLOADS']+input_img)
